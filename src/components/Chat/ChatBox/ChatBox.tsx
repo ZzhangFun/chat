@@ -6,13 +6,14 @@ interface ChatBoxProps {
 }
 
 const ChatBox: FC<ChatBoxProps> = ({ hidden }) => {
-  return <ChatBoxWrap hidden={hidden}>Darova</ChatBoxWrap>;
+  return <ChatBoxWrap hidden={hidden}></ChatBoxWrap>;
 };
 
 const ChatBoxWrap = styled.div`
-  background: lightgray;
+  background: inherit;
+  border: 2px solid lightgray;
   width: 300px;
   height: 80vh;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 `;
 export default ChatBox;
