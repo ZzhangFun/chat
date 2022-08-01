@@ -21,8 +21,16 @@ const ChatWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  right: 25px;
-  bottom: 25px;
+
+  @media screen and (min-width: 410px) {
+    right: 25px;
+    bottom: 25px;
+  }
+
+  @media screen and (max-width: 410px) {
+    right: 0;
+    bottom: 0;
+  }
 `;
 
 export default Chat;
