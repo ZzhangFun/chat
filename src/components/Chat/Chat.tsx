@@ -4,7 +4,7 @@ import ChatBox from './ChatBox/ChatBox';
 import Snap from './Snap/Snap';
 
 const Chat = () => {
-  const [hidden, setHidden] = useState(true);
+  const [hidden, setHidden] = useState<boolean>(true);
 
   const hiddenListener = () => setHidden((h) => !h);
 
@@ -22,9 +22,9 @@ const ChatWrap = styled.div`
   flex-direction: column;
   align-items: flex-end;
 
-  @media screen and (min-width: 410px) {
-    right: 25px;
-    bottom: 25px;
+  @media screen and (min-width: 411px) {
+    right: 30px;
+    bottom: 30px;
   }
 
   @media screen and (max-width: 410px) {
