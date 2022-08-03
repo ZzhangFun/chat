@@ -30,21 +30,33 @@ const MessageWrap = styled.div<{ isUser?: boolean }>`
 
 const MessageSpan = styled.span<{ isUser?: boolean }>`
   display: flex;
-  background: ${(props) => (props.isUser ? '#C2E2FF' : '#f0f0f0')};
-  font-size: 14px;
+  background: ${({ isUser }) => (isUser ? '#DEECFD' : '#F3F5F7')};
+  margin-right: ${({ isUser }) => isUser && '10px'};
+  border-radius: 8px;
   gap: 5px;
   max-width: 35ch;
   padding: 10px;
-  border-radius: 8px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+
+  & > {
+    display: flex;
+  }
 `;
 
 const Author = styled.h4`
-  color: gray;
+  color: #9ea4ac;
 `;
 
 const Time = styled.time`
   align-self: end;
-  color: gray;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #9ea4ac;
 `;
 
 export default Message;

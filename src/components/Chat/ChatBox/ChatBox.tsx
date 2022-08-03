@@ -6,10 +6,10 @@ import Message, { MessageProps } from './Message/Message';
 import { format } from 'date-fns';
 
 interface ChatBoxProps {
-  hidden: boolean;
+  visible?: boolean;
 }
 
-const ChatBox: FC<ChatBoxProps> = ({ hidden }) => {
+const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
   const [value, setValue] = useState('');
   const ref = useRef<HTMLDivElement>(null);
   const id = useRef(0);
@@ -38,18 +38,43 @@ const ChatBox: FC<ChatBoxProps> = ({ hidden }) => {
   }, [messageList]);
 
   return (
-    <ChatBoxWrap className={hidden ? 'hide' : ''}>
-      <MessageList ref={ref}>
-        <h1>Здравствуйте 👋</h1>
-        {messageList.map((message) => {
-          id.current = id.current + 1;
-          return (
-            <Message key={id.current} time={message.time} author={message.author} isUser={message.isUser}>
-              {message.children}
-            </Message>
-          );
-        })}
-      </MessageList>
+    <ChatBoxWrap visible={visible}>
+      <ScrollWrap ref={ref}>
+        <Greeting>
+          <h1>Здравствуйте 👋</h1>
+          <p>
+            Сотрудники службы поддержки mos.ru ответят на вопросы о работе портала, окажут помощь в получении госуслуг и
+            поиске информации
+          </p>
+        </Greeting>
+        <QuestionList>
+          <span>
+            <p>Центры госуслуг «Мои документы»</p>
+          </span>
+          <span>
+            <p>Вопросы по Личному кабинету</p>
+          </span>
+          <span>
+            <p>Молочная кухня</p>
+          </span>
+          <span>
+            <p>Карта Москвича</p>
+          </span>
+          <span>
+            <p>🔎 Найти ответ в базе знаний</p>
+          </span>
+        </QuestionList>
+        <MessageList>
+          {messageList.map((message) => {
+            id.current = id.current + 1;
+            return (
+              <Message key={id.current} time={message.time} author={message.author} isUser={message.isUser}>
+                {message.children}
+              </Message>
+            );
+          })}
+        </MessageList>
+      </ScrollWrap>
       <TextareaWrap>
         <Smile />
         <Textarea placeholder="Введите сообщение..." value={value} onChange={(e) => setValue(e.target.value)} />
@@ -59,22 +84,25 @@ const ChatBox: FC<ChatBoxProps> = ({ hidden }) => {
   );
 };
 
-const ChatBoxWrap = styled.div`
+const ChatBoxWrap = styled.div<{ visible?: boolean }>`
   display: flex;
   flex-direction: column;
-  box-shadow: 0 5px 10px lightgray;
-  border-radius: 5px;
+  box-shadow: 0 8px 16px rgba(51, 51, 51, 0.2);
   background: inherit;
-  width: 340px;
-  height: 85vh;
-  margin-bottom: 10vh;
+  border-radius: 4px;
+  margin-top: 6px;
+  margin-right: 15px;
+  width: 380px;
+  height: calc(100vh - (15px + 58px + 21px + 6px));
+  visibility: ${({ visible }) => !visible && 'hidden'};
 
-  &.hide {
-    visibility: hidden;
+  & > * {
+    margin-left: 16px;
+    margin-right: 16px;
   }
 
   @media screen and (min-width: 411px) {
-    border-top: 5px solid #463cfe;
+    border-top: 5px solid #0848c0;
   }
 
   @media screen and (max-width: 410px) {
@@ -84,35 +112,61 @@ const ChatBoxWrap = styled.div`
   }
 `;
 
-const TextareaWrap = styled.form`
-  display: flex;
-  align-items: end;
-  border: 2px solid lightgray;
-  border-radius: 5px;
-  margin: 15px;
-  padding: 10px 5px;
-`;
+const Greeting = styled.div`
+  margin-right: 10px;
+  margin-top: 130px;
+  margin-bottom: 16px;
 
-const Textarea = styled.textarea`
-  width: 100%;
-  height: 140px;
-  resize: none;
-  outline: none;
-  border: none;
+  & h1 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 37px;
+    color: #333333;
+  }
 
-  &::-webkit-scrollbar {
-    width: 0;
+  & p {
+    font-size: 16px;
+    font-style: normal;
+    line-height: 22px;
+    font-weight: 400;
+    color: #0c1014;
   }
 `;
 
-const MessageList = styled.div`
+const QuestionList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-right: 10px;
+  padding: 9px 1px 9px 1px;
+
+  & > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #dee3e9;
+    box-shadow: 0 2px 4px rgba(44, 48, 52, 0.15);
+    border-radius: 8px;
+    height: 43px;
+  }
+
+  & p {
+    height: 15px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+    color: #0848c0;
+    cursor: pointer;
+  }
+`;
+
+const ScrollWrap = styled.div`
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  gap: 10px;
+  max-height: 760px;
 
   ::-webkit-scrollbar {
     width: 6px;
@@ -121,7 +175,42 @@ const MessageList = styled.div`
     background-color: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: lightgray;
+    background-color: #f3f5f7;
+  }
+`;
+
+const MessageList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 19px;
+`;
+
+const TextareaWrap = styled.form`
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 1px 1px #d6dade;
+  border-radius: 2px;
+  margin-bottom: 16px;
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  height: 48px;
+  resize: none;
+  outline: none;
+  border: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 48px;
+
+  &::placeholder {
+    color: #9ea4ac;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
   }
 `;
 

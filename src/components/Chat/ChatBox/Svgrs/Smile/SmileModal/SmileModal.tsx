@@ -28,10 +28,10 @@ const SmileModalWrap = styled.div`
   position: absolute;
   width: 200px;
   height: 150px;
-  border: inherit;
+  border: 1px solid #dee3e9;
   border-radius: inherit;
-  margin-left: -7px;
-  margin-bottom: 157px;
+  left: 16px;
+  bottom: 168px;
   background: #fff;
   display: grid;
   padding: 5px;

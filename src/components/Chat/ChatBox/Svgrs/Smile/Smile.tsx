@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import SmileModal from './SmileModal/SmileModal';
 
 const Smile = () => {
@@ -10,9 +10,9 @@ const Smile = () => {
       <SmileModal visible={modalVisible} />
       <SvgWarp
         onClick={() => setModalVisible((v) => !v)}
-        width="20"
-        height="20"
-        viewBox="0 0 18 18"
+        width="17"
+        height="17"
+        viewBox="0 0 17 17"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path d="M9 17.5C4.30558 17.5 0.5 13.6944 0.5 9C0.5 4.30558 4.30558 0.5 9 0.5C13.6944 0.5 17.5 4.30558 17.5 9C17.5 13.6944 13.6944 17.5 9 17.5ZM9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" />
@@ -27,10 +27,12 @@ const Smile = () => {
 const SvgWarp = styled.svg`
   flex: 0 0 auto;
   fill: #9ea4ac;
+  margin-left: 9px;
+  margin-right: 10px;
 
   :hover {
     cursor: pointer;
-    fill: royalblue;
+    fill: #0848c0;
   }
 `;
 

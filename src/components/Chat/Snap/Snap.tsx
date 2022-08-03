@@ -3,57 +3,86 @@ import styled from 'styled-components';
 import svgs from './Svgs';
 
 interface SnapProps {
-  hidden: boolean;
-  setHidden: () => void;
+  visible?: boolean;
+  setVisible: () => void;
 }
 
-const Snap: FC<SnapProps> = ({ hidden, setHidden }) => {
-  return (
-    <SnapWrap onClick={() => setHidden()} className={hidden ? 'close' : 'open'}>
-      <SnapBackground className={hidden ? 'close' : 'open'} />
-    </SnapWrap>
-  );
+const Snap: FC<SnapProps> = ({ visible, setVisible }) => {
+  return <SnapWrap onClick={() => setVisible()} visible={visible}></SnapWrap>;
 };
 
-const SnapWrap = styled.button`
-  position: fixed;
+const SnapWrap = styled.button<{ visible?: boolean }>`
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 10px;
-  right: 10px;
-  width: 70px;
-  height: 70px;
+  bottom: 15px;
+  right: 15px;
+  width: 58px;
+  height: 58px;
   border: none;
-  background: inherit;
+  cursor: pointer;
+
+  background: url(${svgs.snap}) center no-repeat;
+  animation: showSnap 0.3s;
 
   @media screen and (max-width: 410px) {
-    width: 10vmax;
-    height: 10vmax;
+    position: ${({ visible }) => visible && 'absolute'};
+    top: ${({ visible }) => visible && '9px'};
+    right: ${({ visible }) => visible && '9px'};
+    width: ${({ visible }) => visible && '40px'};
+    height: ${({ visible }) => visible && '40px'};
+    background-image: ${({ visible }) => visible && `url(${svgs.snapMobile})`};
+  }
+  @keyframes showSnap {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   &::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url(${svgs.snap});
-    background-size: 100%;
-    animation: showSnap 0.3s;
-  }
+    background: ${({ visible }) => (visible ? `url(${svgs.shut})` : `url(${svgs.bubble})`)} no-repeat center;
+    width: ${({ visible }) => (visible ? '12px' : '24px')};
+    height: ${({ visible }) => (visible ? '12px' : '30px')};
+    animation: ${({ visible }) =>
+      visible !== undefined
+        ? visible
+          ? 'showShut 1s linear'
+          : 'bubbleWithShut 1s, bubble 0.5s reverse linear 4s, mirrorBubble 0.5s forwards linear 4.5s, mirrorBubble 0.5s reverse linear 9s, bubble 0.5s forwards linear 9.5s'
+        : 'bubble 1s forwards, bubble 0.5s reverse linear 4s, mirrorBubble 0.5s forwards linear 4.5s, mirrorBubble 0.5s reverse linear 9s, bubble 0.5s forwards linear 9.5s'};
 
-  &.close::after {
-    content: '';
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background-image: url(${svgs.bubble});
-    background-size: 100%;
-    animation: bubble 1s forwards, bubble 0.5s reverse linear 4s, mirrorBubble 0.5s forwards linear 4.5s,
-      mirrorBubble 0.5s reverse linear 9s, bubble 0.5s forwards linear 9.5s;
+    @keyframes showShut {
+      from {
+        background: url(${svgs.shut});
+        transform: scale(0) rotate(0deg);
+      }
+      to {
+        transform: scale(1) rotate(-270deg);
+      }
+    }
 
+    @keyframes bubbleWithShut {
+      from {
+        background-image: url(${svgs.shut});
+        transform: scale(1) rotate(-270deg);
+      }
+      50% {
+        background-image: url(${svgs.shut});
+        transform: scale(0) rotate(0deg);
+      }
+      60% {
+        background: url(${svgs.bubble});
+        transform: translateY(50px) scale(1);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
     @keyframes bubble {
       from {
         opacity: 0;
@@ -76,67 +105,16 @@ const SnapWrap = styled.button`
     }
   }
 
-  &.open {
-    &::after {
-      content: '';
-      position: absolute;
-      width: 25%;
-      height: 25%;
-      background-image: url(${svgs.shut});
-      background-size: 100%;
-      animation: showShut 1s;
-    }
-
-    @media screen and (max-width: 410px) {
-      top: 10px;
-      right: 10px;
-
-      &::before {
-        background-image: url(${svgs.snapMobile});
-      }
-    }
-
-    @keyframes showShut {
-      from {
-        opacity: 0;
-        transform: scale(0.5) rotate(270deg);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-      }
-    }
-  }
-
-  @keyframes showSnap {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-`;
-
-const SnapBackground = styled.div`
-  content: '';
-  z-index: 10;
-  position: inherit;
-  width: 15px;
-  height: 15px;
-
-  &.close::before {
-    z-index: 10;
+  &::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: inherit;
-    height: inherit;
-    animation: leftText 4s linear 1s, rightText 4s linear 6s, check 4s linear 10s;
-  }
-
-  @keyframes leftText {
+    width: 20px;
+    height: 20px;
+    top: 19px;
+    background: no-repeat;
+    animation: ${({ visible }) => !visible && 'leftText 4s linear 1s, rightText 4s linear 6s, check 4s linear 10s'};
+    
+     @keyframes leftText {
     from {
       background-image: url(${svgs.textLeft});
       height: 0;

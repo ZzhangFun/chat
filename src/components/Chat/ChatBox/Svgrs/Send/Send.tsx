@@ -1,19 +1,12 @@
 import styled from 'styled-components';
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 interface SendProps {
   addMessage: () => void;
 }
 
 const Send: FC<SendProps> = ({ addMessage }) => (
-  <SvgWarp
-    onClick={addMessage}
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <SvgWarp onClick={addMessage} width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -26,6 +19,8 @@ const Send: FC<SendProps> = ({ addMessage }) => (
 const SvgWarp = styled.svg`
   min-width: 16px;
   min-height: 16px;
+  margin-left: 10px;
+  margin-right: 9px;
 
   &:hover {
     cursor: pointer;
