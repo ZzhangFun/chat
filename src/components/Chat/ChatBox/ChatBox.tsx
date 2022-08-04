@@ -76,7 +76,7 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
         </MessageList>
       </ScrollWrap>
       <TextareaWrap>
-        <Smile />
+        <Smile value={value} setValue={setValue} />
         <Textarea placeholder="Введите сообщение..." value={value} onChange={(e) => setValue(e.target.value)} />
         {value && <Send addMessage={addMessage} />}
       </TextareaWrap>

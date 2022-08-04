@@ -2,12 +2,17 @@ import styled from 'styled-components';
 import React, { useState } from 'react';
 import SmileModal from './SmileModal/SmileModal';
 
-const Smile = () => {
+interface props {
+  value: string;
+  setValue: (str: string) => void;
+}
+
+const Smile = ({ value, setValue }: props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
-      <SmileModal visible={modalVisible} />
+      <SmileModal value={value} setValue={setValue} visible={modalVisible} />
       <SvgWarp
         onClick={() => setModalVisible((v) => !v)}
         width="17"
