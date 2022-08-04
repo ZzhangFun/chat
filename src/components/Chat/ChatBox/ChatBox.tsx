@@ -87,6 +87,7 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
 const ChatBoxWrap = styled.div<{ visible?: boolean }>`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   box-shadow: 0 8px 16px rgba(51, 51, 51, 0.2);
   background: inherit;
   border-radius: 4px;
@@ -96,9 +97,13 @@ const ChatBoxWrap = styled.div<{ visible?: boolean }>`
   height: calc(100vh - (15px + 58px + 21px + 6px));
   visibility: ${({ visible }) => !visible && 'hidden'};
 
+  @media screen and (max-width: 410px) {
+    margin-top: 0;
+    margin-right: 0;
+  }
+
   & > * {
     margin-left: 16px;
-    margin-right: 16px;
   }
 
   @media screen and (min-width: 411px) {
@@ -141,6 +146,10 @@ const QuestionList = styled.div`
   margin-right: 10px;
   padding: 9px 1px 9px 1px;
 
+  @media screen and (max-width: 410px) {
+    margin-right: 16px;
+  }
+
   & > * {
     display: flex;
     justify-content: center;
@@ -166,7 +175,7 @@ const ScrollWrap = styled.div`
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 760px;
+  margin-bottom: 19px;
 
   ::-webkit-scrollbar {
     width: 6px;
@@ -183,7 +192,7 @@ const MessageList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 19px;
+  max-height: 760px;
 `;
 
 const TextareaWrap = styled.form`
@@ -192,6 +201,7 @@ const TextareaWrap = styled.form`
   box-shadow: 0 0 1px 1px #d6dade;
   border-radius: 2px;
   margin-bottom: 16px;
+  margin-right: 16px;
 `;
 
 const Textarea = styled.textarea`

@@ -22,11 +22,11 @@ const ChatWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  bottom: 0;
   height: 100vh;
 
   @media screen and (min-width: 411px) {
     right: 0;
+    bottom: 0;
   }
 `;
 

@@ -16,10 +16,10 @@ const SnapWrap = styled.button<{ visible?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 15px;
-  right: 15px;
   width: 58px;
   height: 58px;
+  bottom: 15px;
+  right: 15px;
   border: none;
   cursor: pointer;
 
@@ -28,10 +28,10 @@ const SnapWrap = styled.button<{ visible?: boolean }>`
 
   @media screen and (max-width: 410px) {
     position: ${({ visible }) => visible && 'absolute'};
-    top: ${({ visible }) => visible && '9px'};
-    right: ${({ visible }) => visible && '9px'};
     width: ${({ visible }) => visible && '40px'};
     height: ${({ visible }) => visible && '40px'};
+    top: ${({ visible }) => visible && '9px'};
+    right: ${({ visible }) => visible && '9px'};
     background-image: ${({ visible }) => visible && `url(${svgs.snapMobile})`};
   }
   @keyframes showSnap {
