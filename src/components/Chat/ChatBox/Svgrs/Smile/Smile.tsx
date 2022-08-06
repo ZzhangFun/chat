@@ -31,11 +31,12 @@ const Smile = ({ textareaRef, value, setValue }: props) => {
 };
 
 const SvgWarp = styled.svg`
+  align-self: end;
   flex: 0 0 auto;
   fill: #9ea4ac;
-  margin-left: 9px;
-  margin-right: 10px;
+  margin: 0 10px 15px 9px;
   border-radius: 100%;
+  
   transition: 0.5s;
 
 

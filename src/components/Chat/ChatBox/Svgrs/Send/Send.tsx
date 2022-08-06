@@ -17,10 +17,10 @@ const Send: FC<SendProps> = ({ addMessage }) => (
 );
 
 const SvgWarp = styled.svg`
+  align-self: end;
   min-width: 16px;
   min-height: 16px;
-  margin-left: 10px;
-  margin-right: 9px;
+  margin: 0 9px 15px 10px;
   transition: 1s all;
 
   &:hover {
