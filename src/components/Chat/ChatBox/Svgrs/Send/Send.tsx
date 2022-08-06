@@ -21,9 +21,11 @@ const SvgWarp = styled.svg`
   min-height: 16px;
   margin-left: 10px;
   margin-right: 9px;
+  transition: 1s all;
 
   &:hover {
     cursor: pointer;
+    transform: rotate(360deg);
   }
 `;
 export default Send;

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import svgs from './Svgs';
 
 interface SnapProps {
@@ -22,18 +22,28 @@ const SnapWrap = styled.button<{ visible?: boolean }>`
   right: 15px;
   border: none;
   cursor: pointer;
+  border-radius: 100%;
+  transition: 1s all;
+
+  :hover {
+    transform: scale(1.2);
+  }
 
   background: url(${svgs.snap}) center no-repeat;
   animation: showSnap 0.3s;
 
-  @media screen and (max-width: 410px) {
-    position: ${({ visible }) => visible && 'absolute'};
-    width: ${({ visible }) => visible && '40px'};
-    height: ${({ visible }) => visible && '40px'};
-    top: ${({ visible }) => visible && '9px'};
-    right: ${({ visible }) => visible && '9px'};
-    background-image: ${({ visible }) => visible && `url(${svgs.snapMobile})`};
-  }
+  ${({ visible }) =>
+    visible &&
+    css`
+      @media screen and (max-width: 410px) {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 9px;
+        right: 9px;
+        background-image: url(${svgs.snapMobile});
+      }
+    `};
   @keyframes showSnap {
     from {
       opacity: 0;

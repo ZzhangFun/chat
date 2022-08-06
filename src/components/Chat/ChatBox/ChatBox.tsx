@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Smile from './Svgrs/Smile/Smile';
 import Send from './Svgrs/Send/Send';
 import Message, { MessageProps } from './Message/Message';
@@ -12,6 +12,7 @@ interface ChatBoxProps {
 const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
   const [value, setValue] = useState('');
   const ref = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const id = useRef(0);
 
   const [messageList, setMessageList] = useState<MessageProps[]>([
@@ -37,6 +38,12 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
   }, [messageList]);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '0px';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [value]);
   return (
     <ChatBoxWrap visible={visible}>
       <ScrollWrap ref={ref}>
@@ -48,22 +55,23 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
           </p>
         </Greeting>
         <QuestionList>
-          <span>
+          <QuestionSpan>
             <p>Центры госуслуг «Мои документы»</p>
-          </span>
-          <span>
+          </QuestionSpan>
+          <QuestionSpan>
             <p>Вопросы по Личному кабинету</p>
-          </span>
-          <span>
+          </QuestionSpan>
+          <QuestionSpan>
             <p>Молочная кухня</p>
-          </span>
-          <span>
+          </QuestionSpan>
+          <QuestionSpan>
             <p>Карта Москвича</p>
-          </span>
-          <span>
+          </QuestionSpan>
+          <QuestionSpan>
             <p>🔎 Найти ответ в базе знаний</p>
-          </span>
+          </QuestionSpan>
         </QuestionList>
+        <Hr />
         <MessageList>
           {messageList.map((message) => {
             id.current = id.current + 1;
@@ -75,9 +83,14 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
           })}
         </MessageList>
       </ScrollWrap>
-      <TextareaWrap>
-        <Smile value={value} setValue={setValue} />
-        <Textarea placeholder="Введите сообщение..." value={value} onChange={(e) => setValue(e.target.value)} />
+      <TextareaWrap onSubmit={(e) => e.preventDefault()}>
+        <Smile textareaRef={textareaRef} value={value} setValue={setValue} />
+        <Textarea
+          ref={textareaRef}
+          placeholder="Введите сообщение..."
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
         {value && <Send addMessage={addMessage} />}
       </TextareaWrap>
     </ChatBoxWrap>
@@ -95,7 +108,15 @@ const ChatBoxWrap = styled.div<{ visible?: boolean }>`
   margin-right: 15px;
   width: 380px;
   height: calc(100vh - (15px + 58px + 21px + 6px));
-  visibility: ${({ visible }) => !visible && 'hidden'};
+  transition: 1s;
+
+  ${({ visible }) =>
+    !visible &&
+    css`
+      visibility: hidden;
+      transform: translateY(-100px);
+      opacity: 0;
+    `};
 
   @media screen and (max-width: 410px) {
     margin-top: 0;
@@ -144,31 +165,43 @@ const QuestionList = styled.div`
   flex-direction: column;
   gap: 8px;
   margin-right: 10px;
+  margin-bottom: 33px;
   padding: 9px 1px 9px 1px;
 
   @media screen and (max-width: 410px) {
     margin-right: 16px;
   }
+`;
 
-  & > * {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #dee3e9;
-    box-shadow: 0 2px 4px rgba(44, 48, 52, 0.15);
-    border-radius: 8px;
-    height: 43px;
+const QuestionSpan = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dee3e9;
+  box-shadow: 0 2px 4px rgba(44, 48, 52, 0.15);
+  border-radius: 8px;
+  height: 43px;
+  cursor: pointer;
+
+  :hover {
+    p {
+      font-size: 1.1em;
+    }
   }
 
-  & p {
+  p {
     height: 15px;
     font-style: normal;
     font-weight: 400;
     font-size: 13px;
     line-height: 15px;
     color: #0848c0;
-    cursor: pointer;
+    transition: 0.3s all;
   }
+`;
+
+const Hr = styled.hr`
+  margin: 16px 0 22px 0;
 `;
 
 const ScrollWrap = styled.div`
@@ -196,6 +229,7 @@ const MessageList = styled.div`
 `;
 
 const TextareaWrap = styled.form`
+  position: relative;
   display: flex;
   align-items: center;
   box-shadow: 0 0 1px 1px #d6dade;
@@ -206,14 +240,16 @@ const TextareaWrap = styled.form`
 
 const Textarea = styled.textarea`
   width: 100%;
-  height: 48px;
+  min-height: 48px;
+  max-height: 200px;
   resize: none;
   outline: none;
   border: none;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 48px;
+  line-height: 1.5em;
+  padding: 15px 0;
 
   &::placeholder {
     color: #9ea4ac;

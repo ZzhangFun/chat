@@ -3,21 +3,22 @@ import React, { useState } from 'react';
 import SmileModal from './SmileModal/SmileModal';
 
 interface props {
+  textareaRef: any;
   value: string;
   setValue: (str: string) => void;
 }
 
-const Smile = ({ value, setValue }: props) => {
+const Smile = ({ textareaRef, value, setValue }: props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
-      <SmileModal value={value} setValue={setValue} visible={modalVisible} />
+      <SmileModal textareaRef={textareaRef} value={value} setValue={setValue} visible={modalVisible} />
       <SvgWarp
         onClick={() => setModalVisible((v) => !v)}
         width="17"
         height="17"
-        viewBox="0 0 17 17"
+        viewBox="0 0 18 18"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path d="M9 17.5C4.30558 17.5 0.5 13.6944 0.5 9C0.5 4.30558 4.30558 0.5 9 0.5C13.6944 0.5 17.5 4.30558 17.5 9C17.5 13.6944 13.6944 17.5 9 17.5ZM9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" />
@@ -34,11 +35,24 @@ const SvgWarp = styled.svg`
   fill: #9ea4ac;
   margin-left: 9px;
   margin-right: 10px;
+  border-radius: 100%;
+  transition: 0.5s;
+
 
   :hover {
+    
+
     cursor: pointer;
     fill: #0848c0;
+    transform: rotateZ(50deg);
+
+    @media screen and (max-width: 410px) {
+      background: mediumspringgreen;
+    }
   }
+  
+  :
+  
 `;
 
 export default Smile;

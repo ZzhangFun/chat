@@ -2,19 +2,26 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 export interface MessageProps {
-  children: React.ReactNode;
+  children: string;
   author?: string;
   isUser?: boolean;
   time: string;
 }
 
 const Message: FC<MessageProps> = ({ children, time, author, isUser }) => {
+  const messageText = (text: string) => {
+    const urlRegex = /(\b(https|http):\/\/[-\w+&@#/%?=~_|!:,.]*[-\w+&@#/%=~_|])/gi;
+    return text.replace(urlRegex, function (url) {
+      return '<a href="' + url + '">' + url + '</a>';
+    });
+  };
+
   return (
     <MessageWrap isUser={isUser}>
       <MessageSpan isUser={isUser}>
         <div>
           <Author>{author}</Author>
-          {children}
+          <p dangerouslySetInnerHTML={{ __html: messageText(children) }} />
         </div>
         <Time>{time}</Time>
       </MessageSpan>
@@ -26,6 +33,7 @@ const MessageWrap = styled.div<{ isUser?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.isUser ? 'end' : 'start')};
+  word-break: break-word;
 `;
 
 const MessageSpan = styled.span<{ isUser?: boolean }>`
@@ -57,6 +65,7 @@ const Time = styled.time`
   font-size: 12px;
   line-height: 15px;
   color: #9ea4ac;
+  word-break: normal;
 `;
 
 export default Message;

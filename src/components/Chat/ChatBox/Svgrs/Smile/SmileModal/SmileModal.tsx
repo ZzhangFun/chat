@@ -1,58 +1,34 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import smiles from './Smiles';
 
 interface SmileModalProps {
+  textareaRef: any;
   value: string;
   setValue: (str: string) => void;
   visible: boolean;
 }
 
-const SmileModal: FC<SmileModalProps> = ({ value, setValue, visible }) => {
+const SmileModal: FC<SmileModalProps> = ({ textareaRef, value, setValue, visible }) => {
   const addSmile = (event: React.MouseEvent<HTMLSpanElement>) => {
     if (!(event.target instanceof HTMLSpanElement)) return;
-
     const smileSpan = event.target.closest('div > [data-class= "smile"]');
-    smileSpan && setValue(value + smileSpan.innerHTML);
+    if (smileSpan) {
+      const cursorPos = textareaRef.current.selectionStart;
+      const endPos = textareaRef.current.selectionEnd;
+      const newValue = value.substring(0, cursorPos) + smileSpan.innerHTML + value.substring(endPos, value.length);
+      setValue(newValue);
+      textareaRef.current.focus();
+    }
   };
 
   return (
     <SmileModalWrap visible={visible} onClick={(event) => addSmile(event)}>
-      <SpanWrap data-class="smile" title="blush">
-        😊
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="joy">
-        😂
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="kissing_heart">
-        😘
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="sunglasses">
-        😎
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="scream">
-        😱
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="neutral_face">
-        😡
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="rage">
-        😢
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="cry">
-        😐
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="wave">
-        👋
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="like">
-        👍
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="dislike">
-        👎
-      </SpanWrap>
-      <SpanWrap data-class="smile" title="heart">
-        ❤
-      </SpanWrap>
+      {smiles.map((smile) => (
+        <SpanWrap key={smile.title} data-class="smile" title={smile.title}>
+          {smile.children}
+        </SpanWrap>
+      ))}
     </SmileModalWrap>
   );
 };
@@ -63,15 +39,15 @@ const SmileModalWrap = styled.div<{ visible: boolean }>`
   height: 150px;
   border: 1px solid #dee3e9;
   border-radius: inherit;
-  left: 16px;
   background: #fff;
   display: grid;
   padding: 5px;
   gap: 5px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(0, 1fr));
+  text-align: center;
   visibility: ${({ visible }) => !visible && 'hidden'};
-  bottom: calc(15px + 58px + 21px + 15px + 49px + 10px);
+  top: -160px;
 
   @media screen and (max-width: 410px) {
     bottom: calc(15px + 49px + 10px);
