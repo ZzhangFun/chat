@@ -36,13 +36,9 @@ const SvgWarp = styled.svg`
   fill: #9ea4ac;
   margin: 0 10px 15px 9px;
   border-radius: 100%;
-  
   transition: 0.5s;
 
-
   :hover {
-    
-
     cursor: pointer;
     fill: #0848c0;
     transform: rotateZ(50deg);
@@ -51,9 +47,6 @@ const SvgWarp = styled.svg`
       background: mediumspringgreen;
     }
   }
-  
-  :
-  
 `;
 
 export default Smile;

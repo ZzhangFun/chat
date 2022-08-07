@@ -36,7 +36,7 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
   };
 
   const func = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       addMessage();
     }
   };
