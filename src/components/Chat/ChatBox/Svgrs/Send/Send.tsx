@@ -25,7 +25,7 @@ const SvgWarp = styled.svg`
 
   &:hover {
     cursor: pointer;
-    transform: rotate(360deg);
+    transform: scale(1.2);
   }
 `;
 export default Send;

@@ -183,12 +183,6 @@ const QuestionSpan = styled.span`
   height: 43px;
   cursor: pointer;
 
-  :hover {
-    p {
-      font-size: 1.1em;
-    }
-  }
-
   p {
     height: 15px;
     font-style: normal;
@@ -196,7 +190,6 @@ const QuestionSpan = styled.span`
     font-size: 13px;
     line-height: 15px;
     color: #0848c0;
-    transition: 0.3s all;
   }
 `;
 
