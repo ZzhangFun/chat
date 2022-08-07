@@ -44,6 +44,23 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
   }, [value]);
+
+  useEffect(() => {
+    const current = textareaRef.current;
+
+    const func = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        setMessageList((msgList) => [...msgList, { children: value, isUser: true, time: format(new Date(), 'HH:mm') }]);
+        setValue('');
+      }
+    };
+
+    current && current.addEventListener('keyup', func);
+    return () => {
+      current && current.removeEventListener('keyup', func);
+    };
+  }, [value]);
+
   return (
     <ChatBoxWrap visible={visible}>
       <ScrollWrap ref={ref}>
