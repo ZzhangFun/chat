@@ -8,14 +8,14 @@ export interface MessageProps {
   time: string;
 }
 
-const Message: FC<MessageProps> = ({ children, time, author, isUser }) => {
-  const linkFormat = (link: string) => {
-    const urlRegex = /(\b(https|http):\/\/[-\w+&@#/%?=~_|!:,.]*[-\w+&@#/%=~_|])/gi;
-    return link.replace(urlRegex, function (url) {
-      return '<a href="' + url + '">' + url + '</a>';
-    });
-  };
+const linkFormat = (link: string) => {
+  const urlRegex = /(\b(https|http):\/\/[-\w+&@#/%?=~_|!:,.]*[-\w+&@#/%=~_|])/gi;
+  return link.replace(urlRegex, function (url) {
+    return '<a href="' + url + '">' + url + '</a>';
+  });
+};
 
+const Message: FC<MessageProps> = ({ children, time, author, isUser }) => {
   return (
     <MessageWrap isUser={isUser}>
       <MessageSpan isUser={isUser}>
