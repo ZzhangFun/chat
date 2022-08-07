@@ -5,9 +5,9 @@ import ChatBox from './ChatBox/ChatBox';
 import Snap from './Snap/Snap';
 
 const Chat = () => {
-  const [visible, setVisible] = useState<boolean>();
+  const [visible, setVisible] = useState<boolean>(false);
 
-  const visibleListener = () => (visible === undefined ? setVisible(true) : setVisible((v) => !v));
+  const visibleListener = () => setVisible((v) => !v);
 
   return (
     <ChatWrap>

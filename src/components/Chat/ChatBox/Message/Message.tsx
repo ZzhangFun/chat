@@ -9,9 +9,9 @@ export interface MessageProps {
 }
 
 const Message: FC<MessageProps> = ({ children, time, author, isUser }) => {
-  const messageText = (text: string) => {
+  const linkFormat = (link: string) => {
     const urlRegex = /(\b(https|http):\/\/[-\w+&@#/%?=~_|!:,.]*[-\w+&@#/%=~_|])/gi;
-    return text.replace(urlRegex, function (url) {
+    return link.replace(urlRegex, function (url) {
       return '<a href="' + url + '">' + url + '</a>';
     });
   };
@@ -21,7 +21,7 @@ const Message: FC<MessageProps> = ({ children, time, author, isUser }) => {
       <MessageSpan isUser={isUser}>
         <div>
           <Author>{author}</Author>
-          <p dangerouslySetInnerHTML={{ __html: messageText(children) }} />
+          <p dangerouslySetInnerHTML={{ __html: linkFormat(children) }} />
         </div>
         <Time>{time}</Time>
       </MessageSpan>

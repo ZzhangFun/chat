@@ -6,7 +6,7 @@ import Message, { MessageProps } from './Message/Message';
 import { format } from 'date-fns';
 
 interface ChatBoxProps {
-  visible?: boolean;
+  visible: boolean;
 }
 
 const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
@@ -30,8 +30,15 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
   ]);
 
   const addMessage = () => {
+    if (!value) return;
     setMessageList((msgList) => [...msgList, { children: value, isUser: true, time: format(new Date(), 'HH:mm') }]);
     setValue('');
+  };
+
+  const func = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      addMessage();
+    }
   };
 
   useEffect(() => {
@@ -40,25 +47,9 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
 
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = '0px';
+      textareaRef.current.style.height = '48px';
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
-  }, [value]);
-
-  useEffect(() => {
-    const current = textareaRef.current;
-
-    const func = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && e.ctrlKey) {
-        setMessageList((msgList) => [...msgList, { children: value, isUser: true, time: format(new Date(), 'HH:mm') }]);
-        setValue('');
-      }
-    };
-
-    current && current.addEventListener('keyup', func);
-    return () => {
-      current && current.removeEventListener('keyup', func);
-    };
   }, [value]);
 
   return (
@@ -107,6 +98,7 @@ const ChatBox: FC<ChatBoxProps> = ({ visible }) => {
           placeholder="Введите сообщение..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyUp={(e) => func(e)}
         />
         {value && <Send addMessage={addMessage} />}
       </TextareaWrap>

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import svgs from './Svgs';
 
 interface SnapProps {
-  visible?: boolean;
+  visible: boolean;
   setVisible: () => void;
 }
 
