@@ -13,9 +13,18 @@ const Smile = ({ textareaRef, value, setValue }: props) => {
 
   return (
     <>
-      <SmileModal textareaRef={textareaRef} value={value} setValue={setValue} visible={modalVisible} />
+      <SmileModal
+        textareaRef={textareaRef}
+        value={value}
+        setValue={setValue}
+        visible={modalVisible}
+        hide={() => setModalVisible(false)}
+      />
       <SvgWarp
-        onClick={() => setModalVisible((v) => !v)}
+        onClick={(e) => {
+          setModalVisible((v) => !v);
+          e.stopPropagation();
+        }}
         width="17"
         height="17"
         viewBox="0 0 18 18"

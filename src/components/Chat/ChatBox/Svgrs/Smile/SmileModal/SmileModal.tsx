@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import smiles from './Smiles';
 
@@ -7,9 +7,10 @@ interface SmileModalProps {
   value: string;
   setValue: (str: string) => void;
   visible: boolean;
+  hide: () => void;
 }
 
-const SmileModal: FC<SmileModalProps> = ({ textareaRef, value, setValue, visible }) => {
+const SmileModal: FC<SmileModalProps> = ({ textareaRef, value, setValue, visible, hide }) => {
   const addSmile = (event: React.MouseEvent<HTMLSpanElement>) => {
     if (!(event.target instanceof HTMLSpanElement)) return;
     const smileSpan = event.target.closest('div > [data-class= "smile"]');
@@ -22,8 +23,30 @@ const SmileModal: FC<SmileModalProps> = ({ textareaRef, value, setValue, visible
     }
   };
 
+  const hideHandler = useCallback(
+    (event: any) => {
+      const modal = event.target.closest('#modal');
+      if (!visible || modal) return;
+      if (event.type === 'click' && !modal) {
+        hide();
+      } else if (event.type === 'keyup' && event.key === 'Escape') {
+        hide();
+      }
+    },
+    [visible, hide],
+  );
+
+  useEffect(() => {
+    document.addEventListener('click', hideHandler);
+    document.addEventListener('keyup', hideHandler);
+    return () => {
+      document.removeEventListener('click', hideHandler);
+      document.removeEventListener('keyup', hideHandler);
+    };
+  }, [hideHandler]);
+
   return (
-    <SmileModalWrap visible={visible} onClick={(event) => addSmile(event)}>
+    <SmileModalWrap id="modal" visible={visible} onClick={addSmile}>
       {smiles.map((smile) => (
         <SpanWrap key={smile.title} data-class="smile" title={smile.title}>
           {smile.children}
